@@ -1,0 +1,197 @@
+/* ===== PAGE ===== */
+.signup-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--bg-gradient);
+    padding: 20px;
+}
+
+/* ===== CARD ===== */
+.signup-card {
+    width: 100%;
+    max-width: 450px;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    transition: transform 0.3s ease;
+}
+
+.signup-card:hover {
+    transform: translateY(-5px);
+}
+
+.signup-card h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2rem;
+    background: linear-gradient(135deg, #7c3aed 0%, #4c1d95 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* ===== INPUTS ===== */
+.form-control {
+    border-radius: 12px !important;
+    padding: 12px 16px !important;
+    font-size: 15px !important;
+    border: 2px solid #e5e7eb !important;
+    background-color: #f9fafb !important;
+    transition: all 0.2s;
+}
+
+.form-control:focus {
+    border-color: #7c3aed !important;
+    box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.1) !important;
+    background-color: #fff !important;
+}
+
+.form-label {
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 6px;
+    font-size: 0.95rem;
+}
+
+/* ===== BUTTONS ===== */
+button {
+    width: 100%;
+    border-radius: 12px !important;
+    padding: 12px;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.2s;
+}
+
+button[type="submit"],
+button[type="button"].btn-primary {
+    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+    border: none;
+    color: white;
+    box-shadow: 0 4px 6px -1px rgba(124, 58, 237, 0.5);
+}
+
+button[type="button"]:not(.register-btn-link):not(.resend-btn) {
+    background: #ede9fe;
+    color: #5b21b6;
+    border: none;
+}
+
+button[type="button"]:not(.register-btn-link):not(.resend-btn):hover {
+    background: #ddd6fe;
+    color: #4c1d95;
+}
+
+/* Primary buttons hover */
+button[type="submit"]:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(124, 58, 237, 0.5);
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* ===== OTP SECTION ===== */
+.otp-section {
+    background: #fdf2f8;
+    /* Very light pink/purple for contrast */
+    padding: 20px;
+    border-radius: 12px;
+    margin-top: 20px;
+    border: 1px dashed #f472b6;
+}
+
+.otp-timer {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #db2777;
+    margin-top: 10px;
+    font-weight: 500;
+}
+
+.resend-btn {
+    background: transparent !important;
+    border: none;
+    color: #db2777 !important;
+    font-weight: 600;
+    width: auto;
+    padding: 0;
+    margin: 10px auto 0;
+    display: block;
+    text-decoration: underline;
+}
+
+.resend-btn:hover {
+    color: #be185d !important;
+}
+
+/* ===== LOGIN LINK ===== */
+.login-link {
+    margin-top: 24px;
+    text-align: center;
+    font-size: 0.95rem;
+    color: #6b7280;
+}
+
+.login-btn-link {
+    background: none !important;
+    border: none;
+    color: #7c3aed !important;
+    font-weight: 600;
+    cursor: pointer;
+    margin-left: 5px;
+    width: auto;
+    padding: 0;
+    display: inline;
+}
+
+.login-btn-link:hover {
+    text-decoration: underline;
+    color: #5b21b6 !important;
+}
+
+/* ===== TOAST ===== */
+.toast-popup {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    padding: 16px 24px;
+    border-radius: 12px;
+    color: white;
+    font-weight: 600;
+    z-index: 9999;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.toast-popup.success {
+    background: #10b981;
+}
+
+.toast-popup.error {
+    background: #ef4444;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(120%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
