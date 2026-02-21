@@ -15,9 +15,19 @@ export default function Login() {
     });
 
     const [loading, setLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [toast, setToast] = useState({ show: false, message: "", type: "" });
 
     const updateField = (field, value) => {
         setCredentials(prev => ({ ...prev, [field]: value }));
+    };
+
+    const showToastMessage = (message, type = "success") => {
+        setToast({ show: true, message, type });
+
+        setTimeout(() => {
+            setToast({ show: false, message: "", type: "" });
+        }, 2500);
     };
 
     const handleLogin = async (e) => {
@@ -28,72 +38,96 @@ export default function Login() {
 
             const res = await axiosUser.post('/auth/login', credentials);
 
-            if (res.data === "INVALID_CREDENTIALS") {
-                alert("Invalid email or password");
-                return;
+            if (res.data === "LOGIN_SUCCESS") {
+                showToastMessage("Login successful");
+                setTimeout(() => navigate("/"), 2000);
             }
 
-            // If backend returns JWT
-            localStorage.setItem("token", res.data.token);
+        } catch (err) {
+            const errorMsg = err.response?.data;
 
-            alert("Login successful");
-
-            navigate("/"); // Redirect after login
-
-        } catch {
-            alert("Login failed");
+            if (errorMsg === "USER_NOT_FOUND") {
+                showToastMessage("User not found", "error");
+            } else if (errorMsg === "INVALID_PASSWORD") {
+                showToastMessage("Invalid email or password", "error");
+            } else {
+                showToastMessage("Server error. Please try again.", "error");
+            }
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div className="login-container">
+        <>
+            {toast.show && (
+                <div className={`toast-popup ${toast.type}`}>
+                    {toast.message}
+                </div>
+            )}
 
-            <div className="login-form-wrapper">
-                <h2>Login</h2>
+            <div className="login-container">
+                <div className="login-form-wrapper">
+                    <h2>Login</h2>
 
-                <Form onSubmit={handleLogin}>
+                    <Form onSubmit={handleLogin}>
 
-                    <Form.Group>
-                        <Form.Label>Email</Form.Label>
-                        <Form.Control
-                            type="email"
-                            value={credentials.email}
-                            onChange={e => updateField("email", e.target.value)}
-                            required
-                        />
-                    </Form.Group>
+                        {/* Email */}
+                        <Form.Group>
+                            <Form.Label>Email</Form.Label>
+                            <Form.Control
+                                type="email"
+                                value={credentials.email}
+                                onChange={e => updateField("email", e.target.value)}
+                                required
+                            />
+                        </Form.Group>
 
-                    <Form.Group className="mt-3">
-                        <Form.Label>Password</Form.Label>
-                        <Form.Control
-                            type="password"
-                            value={credentials.password}
-                            onChange={e => updateField("password", e.target.value)}
-                            required
-                        />
-                    </Form.Group>
+                        {/* Password with eye toggle */}
+                        <Form.Group className="mt-3 password-group">
+                            <Form.Label>Password</Form.Label>
 
-                    <Button type="submit" disabled={loading} className="mt-3">
-                        Login
-                    </Button>
+                            <div className="password-wrapper">
+                                <Form.Control
+                                    type={showPassword ? "text" : "password"}
+                                    value={credentials.password}
+                                    onChange={e => updateField("password", e.target.value)}
+                                    required
+                                />
 
-                    <div className="register-link">
-                        <p>
-                            Don’t have an account?
-                            <button
-                                type="button"
-                                className="register-btn-link"
-                                onClick={() => navigate("/register")}
-                            >
-                                Register
-                            </button>
-                        </p>
-                    </div>
+                                <span
+                                    className="toggle-password"
+                                    onClick={() => setShowPassword(prev => !prev)}
+                                >
+                                    {showPassword ? "🙈" : "👁"}
+                                </span>
+                            </div>
+                        </Form.Group>
 
-                </Form>
+                        <Button
+                            type="submit"
+                            disabled={loading}
+                            className="mt-3 w-100"
+                        >
+                            {loading ? "Logging in..." : "Login"}
+                        </Button>
+
+                        <div className="register-link mt-3">
+                            <p>
+                                Don’t have an account?
+                                <button
+                                    type="button"
+                                    className="register-btn-link"
+                                    onClick={() => navigate("/register")}
+                                >
+                                    Register
+                                </button>
+                            </p>
+                        </div>
+
+                    </Form>
+                </div>
             </div>
-        </div>
+        </>
     );
 }
